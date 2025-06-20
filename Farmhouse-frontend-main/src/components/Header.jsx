@@ -1,6 +1,7 @@
 
 import React, { useState } from "react";
 import { NavLink } from "react-router-dom";
+import logo from "../assets/logo.png"; 
 
 export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
@@ -13,8 +14,11 @@ export default function Header() {
       <div className="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
         {/* Logo */}
         <NavLink to="/" >
+        <div className="flex items-center space-x-2">
+        <img src={logo} alt="Nirmal Farm Logo" className="h-10 w-10" />
         <div className="text-2xl font-bold text-green-700">
           Nirmal Farm
+        </div>
         </div>
         </NavLink>
 

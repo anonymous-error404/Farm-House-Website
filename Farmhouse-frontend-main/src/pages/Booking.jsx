@@ -143,15 +143,15 @@ const BookingForm = () => {
         }
       `}</style>
 
-      <div className="bg-white rounded-2xl shadow-lg max-w-4xl w-full p-6">
-        <h2 className="text-3xl font-bold text-center text-primary-dark mb-6">
-          🌿 Book Your Nature-Friendly Stay
+      <div className="bg-white rounded-2xl shadow-lg max-w-4xl w-full p-6 mt-6">
+        <h2 className="text-4xl font-bold text-center text-accent mb-6">
+           Book Your Nature-Friendly Stay
         </h2>
 
         <form onSubmit={handleSubmit} className="space-y-6">
           {/* Booking Dates */}
           <div>
-            <SectionTitle icon="📅" title="Booking Dates" />
+            <SectionTitle title="Booking Dates" />
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <FormDatePicker
                 label="Check-In Date"
@@ -192,7 +192,7 @@ const BookingForm = () => {
 
           {/* Guest Info */}
           <div>
-            <SectionTitle icon="👤" title="Guest Information" />
+            <SectionTitle title="Guest Information" />
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <FormInput label="Full Name *" name="guestName" value={formData.guestName} onChange={handleChange} required />
               <FormInput label="Email Address" name="guestEmail" type="email" value={formData.guestEmail} onChange={handleChange} />
@@ -205,7 +205,7 @@ const BookingForm = () => {
 
           {/* ID Section */}
           <div>
-            <SectionTitle icon="🆔" title="Identification" />
+            <SectionTitle title="Identification" />
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <FormSelect label="ID Type *" name="IDtype" value={formData.IDtype} onChange={handleChange} options={['Aadhar', 'PAN', 'Passport', 'Driving License']} required />
               <FormInput label="ID Number *" name="IDnumber" value={formData.IDnumber} onChange={handleChange} required />
@@ -244,7 +244,7 @@ const BookingForm = () => {
               transition: 'all var(--transition-normal)'
             }}
           >
-            🛎️ Submit Booking
+             Submit Booking
           </button>
         </form>
       </div>
@@ -255,7 +255,6 @@ const BookingForm = () => {
 // Reusable components
 const SectionTitle = ({ title, icon }) => (
   <div className="flex items-center gap-2 text-xl font-bold text-primary-dark border-b-2 border-primary-light pb-2 mb-4">
-    <span className="text-accent text-2xl">{icon}</span>
     <h3>{title}</h3>
   </div>
 );

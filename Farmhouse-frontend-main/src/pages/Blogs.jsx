@@ -2,9 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import BlogPopup from '../components/BlogPopup';
 // Import images
-import home1 from '../assets/home1.jfif';
-import home2 from '../assets/home2.jpg';
-import home3 from '../assets/home3.jpg';
 import hero1 from '../assets/hero1.jpg';
 import hero2 from '../assets/hero2.jfif';
 import hero3 from '../assets/hero3.jfif';
@@ -35,7 +32,7 @@ const ImageSlider = ({ images }) => {
 
   return (
     <div className="relative h-full group">
-      <div className="h-full w-full relative overflow-hidden rounded-lg">
+      <div className="h-full w-full relative overflow-hidden">
         {images[currentIndex]?.type === 'video' ? (
           <video
             src={images[currentIndex].url}
@@ -325,7 +322,7 @@ const Blogs = () => {
     return (
       <div className="mt-16 mb-8 pb-8 border-b border-gray-200">
         <div className="flex justify-between items-center mb-4">
-          <h2 className="text-2xl font-bold" style={{ color: 'var(--color-primary)' }}>Featured Story</h2>
+          <h2 className="text-4xl font-bold text-accent my-4">Thoughts, Stories and Reviews</h2>
           <button 
             onClick={() => {
               const formElement = document.getElementById('submission-form');
@@ -339,9 +336,9 @@ const Blogs = () => {
             Share Your Story
           </button>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className=" bg-white rounded-xl shadow-md grid grid-cols-1 md:grid-cols-2 gap-6">
           {featuredBlog.media?.items && featuredBlog.media.items.length > 0 && (
-            <div className="rounded-lg overflow-hidden shadow-md h-64">
+            <div className="rounded-l-xl overflow-hidden shadow-md h-64">
               <ImageSlider images={featuredBlog.media.items} />
             </div>
           )}
@@ -367,15 +364,14 @@ const Blogs = () => {
   // Render blog cards
   const renderBlogCards = () => {
     return currentBlogs.map(blog => (
-      <div key={blog.id} className="border border-gray-200 rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300">
+      <div key={blog.id} className="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300">
         {blog.media?.items && blog.media.items.length > 0 && (
           <div className="h-48">
             <ImageSlider images={blog.media.items} />
           </div>
         )}
         <div className="p-4">
-          <span className="inline-block px-2 py-1 text-white text-xs rounded mb-2"
-                style={{ backgroundColor: 'var(--color-secondary)' }}>
+          <span className="inline-block px-2 py-1 text-white text-xs rounded mb-2">
             {blog.category}
           </span>
           <h3 className="text-lg font-semibold mb-2" style={{ color: 'var(--color-primary)' }}>{blog.title}</h3>
@@ -414,8 +410,7 @@ const Blogs = () => {
     const isOverLimit = wordCount > 1000;
     
     return (
-      <div id="submission-form" className="bg-gray-50 w-full max-w-4xl mx-auto p-4 sm:p-6 rounded-lg mt-8"
-           style={{ backgroundColor: 'var(--color-background-light)' }}>
+      <div id="submission-form" className="bg-white w-full max-w-4xl mx-auto p-4 sm:p-6 rounded-lg shadow-md mt-8">
         <h3 className="text-xl font-semibold mb-2" style={{ color: 'var(--color-primary)' }}>Share Your Story</h3>
         <p className="mb-4" style={{ color: 'var(--color-primary)' }}>
           Have you visited our farm stay? Share your photos, videos, or story with us!
@@ -604,7 +599,7 @@ const Blogs = () => {
   };
 
   return (
-    <div className="container mx-auto px-4 py-8">
+    <div className="bg-cream container mx-auto px-4 py-8">
       {/* Featured Blog Section */}
       {renderFeaturedBlog()}
       
@@ -678,3 +673,4 @@ const Blogs = () => {
 };
 
 export default Blogs;
+
