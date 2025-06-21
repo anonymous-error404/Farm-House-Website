@@ -22,6 +22,7 @@ class Bookings(models.Model):
 class Reviews(models.Model):
     reviewId = models.AutoField(primary_key=True)
     bookingId = models.IntegerField()
+    reviewTitle = models.CharField(max_length=50)
     reviewDate = models.DateField()
     rating = models.IntegerField()
     reviewContent = models.TextField(default="")
