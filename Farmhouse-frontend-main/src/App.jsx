@@ -11,21 +11,24 @@ import ContactPage from './pages/Contact'
 import About from './pages/About'
 import Blogs from './pages/Blogs'
 
-const App = () => {
+import Test from './components/Test'
+
+function App() {
   return (
-  <Router>
-    <Header />
-    <Routes>
-      <Route path='/' element = {<Home />} /> 
-      <Route path='/about' element = {<About />} />
-      <Route path='/blogs' element = {<Blogs />} />
-      <Route path='/contact' element = {<ContactPage/>} />
-      <Route path='/gallery' element = {<Gallery />} />
-      <Route path='/bookings' element = {<Booking />} />
-       <Route path='/menu' element = {<Menu />} />
-    </Routes>
-    <Footer />
-  </Router>
+    <Router>
+      <Header />
+      <Routes>
+        <Route path='/' element={<Home />} />
+        <Route path='/about' element={<About />} />
+        <Route path='/blogs' element={<Blogs />} />
+        <Route path='/contact' element={<ContactPage />} />
+        <Route path='/gallery' element={<Gallery />} />
+        <Route path='/bookings' element={<Booking />} />
+        <Route path='/menu' element={<Menu />} />
+        <Route path='/test' element={<Test />} />
+      </Routes>
+      <Footer />
+    </Router>
   )
 }
 

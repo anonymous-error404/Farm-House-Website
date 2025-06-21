@@ -11,9 +11,9 @@ export default function FarmInfoSection() {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
           viewport={{ once: true }}
-          className="farm-info-title" 
+          className="text-4xl font-bold text-center text-accent mb-10 " 
         >
-          <h2 className="text-4xl font-bold text-center text-accent mb-10 ">Plan Your Visit</h2>
+          Plan Your Visit
         </motion.h2>
       </div>
 
@@ -91,8 +91,8 @@ export default function FarmInfoSection() {
             Minimum 10 adults required<br />
             Bungalow capacity: 20–25 adults<br /><br />
             <strong>Contact:</strong> <br />
-            <p><a href="tel:9870204394">+91 9870204394</a></p>
-          <p><a href="tel:9870204424">+91 9870204424</a></p>
+            <a href="tel:9870204394">+91 9870204394</a><br />
+            <a href="tel:9870204424">+91 9870204424</a>
           </p>
         </motion.div>
       </div>
