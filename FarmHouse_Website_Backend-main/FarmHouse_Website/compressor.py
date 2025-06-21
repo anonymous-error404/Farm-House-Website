@@ -35,7 +35,7 @@ import ffmpeg
 
 def compressVideo(video_file):
     with tempfile.NamedTemporaryFile(mode='w+b', suffix='.mp4', delete=False) as temp_input, \
-         tempfile.NamedTemporaryFile(mode='w+b', suffix='.mp4', delete=False) as temp_output:
+        tempfile.NamedTemporaryFile(mode='w+b', suffix='.mp4', delete=False) as temp_output:
 
         temp_input.write(video_file)
         temp_input.flush()
