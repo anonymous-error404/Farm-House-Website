@@ -12,7 +12,7 @@ class BookingViewSet(viewsets.ModelViewSet):
     queryset = Bookings.objects.all()
     serializer_class = BookingsSerializer
 
-    def create(self, request, *args, **kwargs):
+    def create(self, request):
 
         serializer = self.get_serializer(data=request.data)  # raw data
 
@@ -46,7 +46,7 @@ class ReviewsViewSet(viewsets.ModelViewSet):
     queryset = Reviews.objects.all()
     serializer_class = ReviewsSerializer
 
-    def create(self, request, *args, **kwargs):
+    def create(self, request):
         serializer = self.get_serializer(data=request.data)
 
         if serializer.is_valid(raise_exception=True):
@@ -67,7 +67,7 @@ class ReviewsViewSet(viewsets.ModelViewSet):
             except Exception as e:
                 print(e)
 
-    def list(self, request, *args, **kwargs):
+    def list(self, request):
         queryset = self.get_queryset()
         serializer = ReviewsSerializer(queryset, many=True)
         reviews = serializer.data
