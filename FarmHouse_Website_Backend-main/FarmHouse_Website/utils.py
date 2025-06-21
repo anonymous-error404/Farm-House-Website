@@ -9,6 +9,7 @@ from rest_framework.serializers import Serializer
 from FarmHouse_Website_Backend import settings
 from . import compressor, views
 from .models import Bookings, ReviewsMedia
+from django.core.cache import cache
 
 # Define payment status constants for clarity
 PAYMENT_STATUS_PENDING = 0
@@ -306,7 +307,7 @@ def sendOtpVerificationMail(receiver):
     otp = random.randint(100000, 999999)
 
     try:
-        print("Sending to:", [receiver])
+        print("Sending to:", receiver)
 
         email = EmailMessage(
             subject="OTP Verification",
@@ -315,7 +316,7 @@ def sendOtpVerificationMail(receiver):
             to=[receiver]
         )
         if email.send(fail_silently=False) :
-            views.temporary_otp_storage.put(receiver,otp)
+            cache.set(receiver,otp,timeout=300)
             print("email sent with otp ", otp)
             return True
         return False
