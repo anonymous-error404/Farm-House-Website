@@ -22,6 +22,7 @@ class Bookings(models.Model):
 class Reviews(models.Model):
     reviewId = models.AutoField(primary_key=True)
     bookingId = models.IntegerField()
+    reviewTitle = models.CharField(max_length=50, default="")
     reviewDate = models.DateField()
     rating = models.IntegerField()
     reviewContent = models.TextField(default="")
@@ -39,7 +40,7 @@ class Menu(models.Model):
     dishDescription = models.TextField()
     dishPrice = models.IntegerField()
     dishImage = models.BinaryField()
-    dishCategory = models.CharField(max_length=30)
-    
+    dishCategory = models.CharField(max_length=30, default="")
+    dishSource = models.CharField(max_length=30, default="")
 
 
