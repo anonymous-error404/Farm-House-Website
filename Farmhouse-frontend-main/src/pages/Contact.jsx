@@ -1,11 +1,11 @@
-import React from "react"
+import { FaInstagram } from "react-icons/fa";
 const ContactPage = () => {
   return (
-    <div className="bg-[#f0faef] text-green-900 font-sans">
+    <div className="bg-[#fffbea] text-green-900 font-sans">
 
       {/* Section 1 - Welcome & Image */}
       <section className="px-6 pt-12 mt-12 text-center">
-        <h2 className="text-4xl font-bold mb-2 text-green-900">Let’s Connect</h2>
+        <h2 className="text-4xl font-bold mb-2 text-accent">Let’s Connect</h2>
         <p className="text-gray-600 max-w-xl mx-auto mb-8">
           We'd love to hear from you! Whether it's a visit, question, or feedback — we're here.
         </p>
@@ -15,7 +15,7 @@ const ContactPage = () => {
       <section className="flex flex-col md:flex-row gap-10 px-6 md:px-16 pb-12">
         {/* Left - Contact Info */}
         <div className="md:w-1/2 bg-white rounded-2xl shadow-xl p-8 space-y-5">
-          <h3 className="text-2xl font-semibold text-green-800 mb-4">Get in Touch</h3>
+          <h3 className="text-3xl font-bold text-primary mb-4">Get in Touch</h3>
           <p className="flex items-center gap-2 text-gray-600">We’re located where the noise fades and peace begins. It’s simple to find us, but the memories will stay with you.</p>
           <div className="text-gray-900 space-y-3">
             <p className="flex items-center gap-2">📍 <span>64/1, Madhuban Society Chon Gaon,
@@ -23,8 +23,18 @@ const ContactPage = () => {
                                                         <br />Thane 421503.</span></p>
             <p className="flex items-center gap-2">📞 <span><a href="tel:9870204394"> 98702 04394</a>
                                                         <br /><a href="tel:9870204424"> 98702 04424</a></span></p>
-                                                        <p></p>
-          <p></p>
+                                                       
+             <p>
+                <a
+                  href="https://www.instagram.com/nirmal_farmstays"  
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-2 text-pink-600 hover:text-pink-800"
+                >
+                  <FaInstagram className="text-2xl" />
+                  <span>@nirmal_farmstays</span> 
+                </a>
+              </p>
           </div>
 
         </div>

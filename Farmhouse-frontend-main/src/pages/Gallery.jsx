@@ -59,9 +59,10 @@ export default function Gallery() {
   }, [selectedImage, currentIndex]);
 
   return (
-    <div className="min-h-screen bg-white px-4 py-12">
+    <div className="min-h-screen bg-[#fffbea] px-4 py-12">
       <div className="max-w-7xl mx-auto">
-        <h2 className="text-3xl font-extrabold text-center text-green-900 mb-10 mt-15">
+        <h2 className="text-4xl font-bold text-center text-accent mb-10 mt-15">
+          
           Nirmal Farm Image Gallery
         </h2>
 
@@ -170,7 +171,7 @@ export default function Gallery() {
 
         {/* Video Section */}
         <motion.section
-          className="bg-green-50 py-16 px-6 md:px-20 rounded-xl shadow-inner mb-16"
+          className="bg-white py-16 px-6 md:px-20 rounded-xl shadow-md mb-16"
           initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -178,8 +179,8 @@ export default function Gallery() {
         >
           <div className="max-w-7xl mx-auto grid md:grid-cols-2 gap-10 items-center">
             <motion.div>
-              <h2 className="text-4xl font-bold text-green-800 mb-4">Watch Our Introduction</h2>
-              <p className="text-green-700 text-lg mb-4">
+              <h3 className="text-3xl font-bold text-primary mb-4">Watch Our Introduction</h3>
+              <p className="text-green-700 text-xl mb-4">
                 Discover the beauty and tranquility of our farm house. Surrounded by lush greenery,
                 soothing waters, and scenic views — it's the perfect escape into the heart of nature.
               </p>
@@ -204,12 +205,12 @@ export default function Gallery() {
         </motion.section>
 
         {/* Brochure Section */}
-        <section className="bg-emerald-50 py-16 px-6 mt-10 rounded-xl text-center">
+        <section className="bg-white py-16 px-6 mt-10 rounded-xl shadow-md text-center">
           <div className="max-w-3xl mx-auto">
-            <h2 className="text-4xl font-bold text-emerald-900 mb-4">
+            <h3 className="text-3xl font-bold text-primary mb-4">
               Discover Nature’s Comfort
-            </h2>
-            <p className="text-emerald-800 text-lg mb-6">
+            </h3>
+            <p className="text-green-700 text-xl mb-6">
               Dive into the serenity of nature with our farm house. Download our brochure to explore sustainable nature-inspired stays, organic dining, and wellness experiences that reconnect you with the Earth.
             </p>
 
@@ -241,3 +242,5 @@ export default function Gallery() {
     </div>
   );
 }
+
+

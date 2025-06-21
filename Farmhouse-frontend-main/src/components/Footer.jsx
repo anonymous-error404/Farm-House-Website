@@ -1,3 +1,5 @@
+import logo from '../assets/logo.png'; 
+import { FaInstagram } from "react-icons/fa";
 export default function Footer() {
   return (
     <footer className="bg-green-100 text-gray-800 py-8 border-t border-green-300">
@@ -6,12 +8,21 @@ export default function Footer() {
         {/* Logo and Tagline */}
         <div>
           <div className="flex items-center justify-center md:justify-start mb-2">
-            <div className="w-10 h-10 bg-green-600 rounded flex items-center justify-center text-white font-bold text-xl mr-2">
-              🌱
-            </div>
+            <img src={logo} alt="Nirmal Farm Logo" className="h-10 w-10" />
             <h2 className="text-2xl font-semibold text-green-800">Nirmal Farm</h2>
           </div>
           <p className="text-sm italic text-green-700">Connect with nature</p>
+           <p>
+                          <a
+                            href="https://www.instagram.com/nirmal_farmstays"  
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="flex items-center gap-2 text-green-700 hover:text-green-800"
+                          >
+                            <FaInstagram className="text-lg" />
+                            <span>@nirmal_farmstays</span> 
+                          </a>
+                        </p>
         </div>
 
         {/* Contact Info */}
