@@ -287,15 +287,15 @@ def setMedia(media_list, review):
 def getMedia(review_id):
     media_list = []
     try:
-         media_entries = ReviewsMedia.objects.filter(reviewId=review_id)
-         for media_entry in media_entries:
-             media_list.append(
-                 {
-                     'media_name' : media_entry.mediaName,
-                     'media_type': media_entry.mediaType,
-                     'media' : ''#base64.b64encode(media_entry.media).decode('utf-8')
-                 }
-             )
+        media_entries = ReviewsMedia.objects.filter(reviewId=review_id)
+        for media_entry in media_entries:
+            media_list.append(
+                {
+                    'media_name' : media_entry.mediaName,
+                    'media_type': media_entry.mediaType,
+                    'media' : base64.b64encode(media_entry.media).decode('utf-8')
+                }
+            )
     except Exception as e:
         print(e)
         media_list.append('Some error occured.')
