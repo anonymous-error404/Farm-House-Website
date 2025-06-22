@@ -6,7 +6,7 @@ import React from 'react'
 const Test = () => {
 
     useEffect(() => {
-     fetchData();
+    const res = fetchData();
     }, []);
   return (
     <div>
