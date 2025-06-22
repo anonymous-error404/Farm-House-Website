@@ -45,7 +45,7 @@ class BookingsSerializer(serializers.ModelSerializer):
 
 
 class MenuSerializer(serializers.ModelSerializer):
-    dishImage = EncodeWhileWriteOnly()
+    dishImage = EncodeWhileWriteOnly(required=False)
 
     class Meta:
         model = Menu

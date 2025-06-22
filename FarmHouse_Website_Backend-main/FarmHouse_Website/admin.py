@@ -15,3 +15,7 @@ class BookingsAdmin(admin.ModelAdmin):
 @admin.register(Menu)
 class MenuAdmin(admin.ModelAdmin):
     form = MenuAdminForm
+
+@admin.register(Reviews)
+class ReviewAdmin(admin.ModelAdmin):
+    pass
