@@ -75,14 +75,14 @@ const fadeUpItem = {
 
 const FoodMenu = () => {
   return (
-    <div className="bg-gradient-to-br from-lime-50 via-amber-50 to-rose-50 min-h-screen py-10 px-4 md:px-12 text-gray-800 font-sans mt-15">
+    <div className="bg-[#fffbea] from-lime-50 via-amber-50 to-rose-50 min-h-screen py-10 px-4 md:px-12 text-gray-800 font-sans mt-15">
       <motion.h1
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.7 }}
-        className="text-3xl md:text-4xl text-center font-bold text-amber-700 mb-12"
+        className="text-4xl text-center font-bold text-accent mb-12"
       >
-        Resort Food Menu
+         Food Menu
       </motion.h1>
 
       <div className="space-y-16">
@@ -108,7 +108,7 @@ const FoodMenu = () => {
             </motion.div>
 
             {/* Text Block */}
-            <div className="md:w-1/2 w-full h-81 bg-white/70 backdrop-blur-sm border border-yellow-100 rounded-xl p-5 shadow-sm hover:shadow-md transition-all flex flex-col justify-center">
+            <div className="md:w-1/2 w-full h-81 bg-white backdrop-blur-sm border border-yellow-100 rounded-xl p-5 shadow-md transition-all flex flex-col justify-center">
               <div>
                 <h2 className={`text-xl font-bold ${color} mb-3 border-b pb-1 border-yellow-300`}>
                   {title}
@@ -136,7 +136,7 @@ const FoodMenu = () => {
         whileInView={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.3, duration: 0.6 }}
         viewport={{ once: true }}
-        className="mt-12 bg-white/60 border-l-4 border-blue-400 px-5 py-3 text-sm text-gray-800 rounded-lg shadow max-w-xl mx-auto"
+        className="mt-12 bg-white border-l-4 border-blue-400 px-5 py-3 text-sm text-gray-800 rounded-lg shadow max-w-xl mx-auto"
       >
         <strong className="text-blue-700">Note:</strong> Fish dishes prepared at{" "}
         <span className="text-amber-700 font-bold">₹400/kg</span> when customers provide raw fish. 🐟✨
@@ -144,7 +144,7 @@ const FoodMenu = () => {
 
       {/* Detailed Menu Section */}
       <motion.div
-        className="bg-[#FFF9F2] mt-20 p-6 font-sans text-gray-800"
+        className=" p-6 font-sans text-gray-800"
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true }}
@@ -152,7 +152,7 @@ const FoodMenu = () => {
       >
         <div className="max-w-6xl mx-auto">
           <motion.h2
-            className="text-4xl font-bold text-center text-green-700 mb-10"
+            className="text-4xl font-bold text-center text-accent mb-12"
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             transition={{ duration: 0.6 }}

@@ -37,7 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'FarmHouse_Website.apps.FarmhouseWebsiteConfig',
     'rest_framework',
-    'corsheaders',
+    'corsheaders'
 ]
 
 MIDDLEWARE = [
@@ -52,8 +52,10 @@ MIDDLEWARE = [
 ]
 
 CORS_ALLOWED_ORIGINS = [
-    "http://127.0.0.1:5173",
+    "http://localhost:5173",
 ]
+
+CORS_ALLOW_CREDENTIALS = True
 
 ROOT_URLCONF = 'FarmHouse_Website_Backend.urls'
 

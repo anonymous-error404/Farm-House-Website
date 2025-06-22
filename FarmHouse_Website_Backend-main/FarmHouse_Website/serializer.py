@@ -55,6 +55,8 @@ class MenuSerializer(serializers.ModelSerializer):
             'dishDescription',
             'dishPrice',
             'dishImage',
+            'dishSource',
+            'dishCategory',
         ]
 
 class ReviewsSerializer(serializers.ModelSerializer):
