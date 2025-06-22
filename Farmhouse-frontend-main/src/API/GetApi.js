@@ -2,7 +2,7 @@ import axiosInstance from "./Axios";
 
 const fetchData = async () => {
   try {
-    const response = await axiosInstance.get('/reviews');
+    const response = await axiosInstance.get('/menu/');
     console.log("Data fetched successfully:", response.data);
     return response.data;
   } catch (error) {
