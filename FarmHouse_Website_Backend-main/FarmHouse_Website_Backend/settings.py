@@ -37,9 +37,11 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'FarmHouse_Website.apps.FarmhouseWebsiteConfig',
     'rest_framework',
+    'corsheaders',
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -47,6 +49,10 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+]
+
+CORS_ALLOWED_ORIGINS = [
+    "http://127.0.0.1:5173",
 ]
 
 ROOT_URLCONF = 'FarmHouse_Website_Backend.urls'
@@ -138,3 +144,5 @@ def MAX_UPLOAD_SIZE():
 
 def PATH_TO_FFMPEG():
     return "C:/ffmpeg/ffmpeg-2025-06-11-git-f019dd69f0-essentials_build/bin/ffmpeg.exe"
+
+

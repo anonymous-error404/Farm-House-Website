@@ -20,7 +20,7 @@ class BookingAdminForm(forms.ModelForm):
         if uploaded_bytes:
             if len(uploaded_bytes) >= settings.MAX_UPLOAD_SIZE():
                 if uploaded_file.name.endswith(".jpg"):
-                   uploaded_bytes = compressor.compressImageWithBestQuality(uploaded_bytes)
+                    uploaded_bytes = compressor.compressImageWithBestQuality(uploaded_bytes)
                 elif uploaded_file.name.endswith(".mp4"):
                     uploaded_bytes = compressor.compressVideo(uploaded_bytes)
 

@@ -14,8 +14,8 @@ class Bookings(models.Model):
     guestAddress = models.TextField()
     totalGuestsAdults = models.IntegerField(default=0)
     totalGuestsChildren = models.IntegerField(default=0)
-    IDtype = models.CharField(max_length=30) 
-    IDnumber = models.CharField(max_length=30, verbose_name="number on ID") 
+    IDtype = models.CharField(max_length=30)
+    IDnumber = models.CharField(max_length=30, verbose_name="number on ID")
     IDimage = models.BinaryField(default=b'')
     purposeOfStay = models.CharField(max_length=50)
 
