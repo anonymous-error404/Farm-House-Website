@@ -60,6 +60,7 @@ class MenuSerializer(serializers.ModelSerializer):
         ]
 
 class ReviewsSerializer(serializers.ModelSerializer):
+    bookingId = serializers.IntegerField(required=False)
     reviewDate = serializers.DateField(required=False)
 
     class Meta:

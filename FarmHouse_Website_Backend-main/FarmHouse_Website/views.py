@@ -51,7 +51,7 @@ class ReviewsViewSet(viewsets.ModelViewSet):
 
         if serializer.is_valid(raise_exception=True):
 
-            if not Bookings.objects.filter(bookingId=Bookings.objects.get(guestPhone=request.data['guestPhone']).bookingId).exists():
+            if not Bookings.objects.filter(guestPhone = request.data['guestPhone']).exists():
                 return Response(status=status.HTTP_406_NOT_ACCEPTABLE)
 
             try:
