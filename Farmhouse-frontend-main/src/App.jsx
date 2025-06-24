@@ -9,9 +9,7 @@ import Menu from './pages/Menu';
 import Home from './pages/Home'
 import ContactPage from './pages/Contact'
 import About from './pages/About'
-import Blogs from './pages/Blogs'
-
-import Test from './components/Test'
+import ReviewsPage from './pages/ReviewsPage'
 
 function App() {
   return (
@@ -20,12 +18,11 @@ function App() {
       <Routes>
         <Route path='/' element={<Home />} />
         <Route path='/about' element={<About />} />
-        <Route path='/blogs' element={<Blogs />} />
+        <Route path='/blogs' element={<ReviewsPage />} />
         <Route path='/contact' element={<ContactPage />} />
         <Route path='/gallery' element={<Gallery />} />
         <Route path='/bookings' element={<Booking />} />
         <Route path='/menu' element={<Menu />} />
-        <Route path='/test' element={<Test />} />
       </Routes>
       <Footer />
     </Router>
