@@ -11,7 +11,7 @@ export const fetchReviews = async () => {
 }
 };
 
-const menuData = async () => {
+export const menuData = async () => {
   try {
     const response = await axiosInstance.get('/menu/');
     return response.data;
@@ -21,7 +21,7 @@ const menuData = async () => {
   }
 }
 
-const fetchBookings = async () => {
+export const fetchBookings = async () => {
   try {
     const response = await axiosInstance.get('/bookings/');
     return response.data;
@@ -31,5 +31,3 @@ const fetchBookings = async () => {
   }
 }
 
-export default menuData;
-export default fetchBookings;
