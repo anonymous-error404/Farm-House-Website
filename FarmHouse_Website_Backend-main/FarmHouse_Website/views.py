@@ -1,48 +1,59 @@
 from datetime import datetime
-from django.http import HttpResponse, JsonResponse
 from rest_framework import viewsets, status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from FarmHouse_Website.serializer import *
 from django.core.cache import cache
 
-#gotta create a new url mapping for otp verification and call the bookingviewset.create method after otp is verified
+class BaseViewSet(viewsets.ModelViewSet):
+    def initialize_request(self, request, *args, **kwargs):
+        request = super().initialize_request(request, *args, **kwargs)
 
-class BookingViewSet(viewsets.ModelViewSet):
+        # Set default role if not present in session
+        if not request.session.get('role'):
+            request.session['role'] = 'Customer'
+            request.session['status'] = 'unverified'
+            #request.session['customerEmail'] = request.data['customerEmail']
+        
+        return request
+
+class BookingViewSet(BaseViewSet):
     queryset = Bookings.objects.all()
     serializer_class = BookingsSerializer
 
     def create(self, request):
 
-        serializer = self.get_serializer(data=request.data)  # raw data
+        serializer = self.get_serializer(data=request.data)
 
-        if serializer.is_valid(raise_exception=True):  # check if data is valid
+        if serializer.is_valid(raise_exception=True):
             check_in_date = serializer.validated_data['checkInDate']
             check_out_date = serializer.validated_data['checkOutDate']
+
             validity_status, message = utils.validate_booking_dates(check_in_date, check_out_date)
             print(message)
 
-            if validity_status:
-                conflict_status, conflicts = utils.check_booking_availability(check_in_date, check_out_date)
-                if conflict_status:
-                    return Response(data=conflicts, status=status.HTTP_409_CONFLICT)
-                else:
-                    if 'IDimage' not in serializer.validated_data:
-                        return Response({'message': 'IDimage is required'}, status=status.HTTP_206_PARTIAL_CONTENT)
-                    else :
-                        serializer.validated_data['bookingDate'] = datetime.today()
-                        serializer.save()
-                        return Response(status=status.HTTP_200_OK)
-            else:
-                return Response(status=status.HTTP_406_NOT_ACCEPTABLE)
-        else:
-            return Response(status=status.HTTP_422_UNPROCESSABLE_ENTITY)
+            if not validity_status:
+                return Response({'error': message}, status=status.HTTP_406_NOT_ACCEPTABLE)
 
-class MenuViewSet(viewsets.ModelViewSet):
+            conflict_status, conflicts = utils.check_booking_availability(check_in_date, check_out_date)
+            if conflict_status:
+                return Response(data=conflicts, status=status.HTTP_409_CONFLICT)
+
+            if 'IDimage' not in serializer.validated_data:
+                return Response({'message': 'IDimage is required'}, status=status.HTTP_206_PARTIAL_CONTENT)
+
+            serializer.validated_data['bookingDate'] = datetime.today()
+            serializer.validated_data['guestEmail'] = email
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+
+        return Response(serializer.errors, status=status.HTTP_422_UNPROCESSABLE_ENTITY)
+
+class MenuViewSet(BaseViewSet):
     queryset = Menu.objects.all()
     serializer_class = MenuSerializer
 
-class ReviewsViewSet(viewsets.ModelViewSet):
+class ReviewsViewSet(BaseViewSet):
     queryset = Reviews.objects.all()
     serializer_class = ReviewsSerializer
 
@@ -67,48 +78,29 @@ class ReviewsViewSet(viewsets.ModelViewSet):
             except Exception as e:
                 print(e)
 
-    def list(self, request):
-        queryset = self.get_queryset()
-        serializer = ReviewsSerializer(queryset, many=True)
-        reviews = serializer.data
-
-        for review in reviews:
-            review['media_list'] = utils.getMedia(review['reviewId'])
-
-        return Response(data=reviews, status=status.HTTP_200_OK)
-
-    def retrieve(self, request, *args, **kwargs):
-        queryset = self.get_queryset().get(reviewId=kwargs.get('pk'))
-        serializer = ReviewsSerializer(queryset, many=False)
-        review = serializer.data
-        review['media_list'] = utils.getMedia(review['reviewId'])
-        return Response(data=review, status=status.HTTP_200_OK)
-
-
-class Authorization(APIView):
+# class Authorization(APIView):
     
-    def get(self, request):
-        
-        if request.data['guestEmail'] :
-            receiver = request.data['guestEmail']
-            
-            if Bookings.objects.filter(guestEmail=receiver).exists() :
-                return Response(status=status.HTTP_100_CONTINUE)
-            elif utils.sendOtpVerificationMail(receiver=receiver):
-                request.session['customerEmail']=receiver
-                return Response(status=status.HTTP_200_OK)
-            else :
-                return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-        return Response(status=status.HTTP_203_NON_AUTHORITATIVE_INFORMATION)
-        
-    def post(self,request):
-        
-        if request.session['customerEmail'] and request.data['otp']:
-            customerEmail = request.session['customerEmail']
-            otp = request.data['otp']
-            
-            if cache.get(customerEmail) == otp :
-                cache.delete(customerEmail)
-                return Response(status=status.HTTP_200_OK)
-            return Response(status=status.HTTP_401_UNAUTHORIZED)
-        return Response(status=status.HTTP_203_NON_AUTHORITATIVE_INFORMATION)
+#     def get(self, request):
+#         email = request.data.get('guestEmail')
+#         if email:
+#             if Bookings.objects.filter(guestEmail=email).exists():
+#                 return Response(status=status.HTTP_100_CONTINUE)
+#             elif utils.sendOtpVerificationMail(receiver=email):
+#                 request.session['customerEmail'] = email
+#                 return Response(status=status.HTTP_200_OK)
+#             else:
+#                 return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+#         return Response(status=status.HTTP_400_BAD_REQUEST)
+
+#     def post(self, request):
+#         customerEmail = request.session.get('customerEmail')
+#         otp = request.data.get('otp')
+
+#         if customerEmail and otp:
+#             if cache.get(customerEmail) == otp:
+#                 request.session['status'] = "verified"
+#                 cache.delete(customerEmail)
+#                 return Response(status=status.HTTP_200_OK)
+#             return Response(status=status.HTTP_401_UNAUTHORIZED)
+
+#         return Response(status=status.HTTP_400_BAD_REQUEST)

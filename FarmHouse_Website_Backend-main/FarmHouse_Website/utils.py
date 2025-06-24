@@ -303,22 +303,22 @@ def getMedia(review_id):
         return media_list
 
 
-def sendOtpVerificationMail(receiver):
-    otp = random.randint(100000, 999999)
+# def sendOtpVerificationMail(receiver):
+#     otp = random.randint(100000, 999999)
 
-    try:
-        print("Sending to:", receiver)
+#     try:
+#         print("Sending to:", receiver)
 
-        email = EmailMessage(
-            subject="OTP Verification",
-            body=f"Your OTP is {otp}",
-            from_email=settings.EMAIL_HOST_USER,
-            to=[receiver]
-        )
-        if email.send(fail_silently=False) :
-            cache.set(receiver,otp,timeout=300)
-            print("email sent with otp ", otp)
-            return True
-        return False
-    except Exception as e:
-        print(e)
+#         email = EmailMessage(
+#             subject="OTP Verification",
+#             body=f"Your OTP is {otp}",
+#             from_email=settings.EMAIL_HOST_USER,
+#             to=[receiver]
+#         )
+#         if email.send(fail_silently=False) :
+#             cache.set(receiver,otp,timeout=300)
+#             print("email sent with otp ", otp)
+#             return True
+#         return False
+#     except Exception as e:
+#         print(e)

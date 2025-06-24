@@ -105,6 +105,12 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+DEFAULT_RENDERER_CLASSES = [
+    'rest_framework.renderers.JSONRenderer',
+]
+
+SESSION_ENGINE = 'django.contrib.sessions.backends.db'
+
 # Internationalization
 # https://docs.djangoproject.com/en/5.2/topics/i18n/
 

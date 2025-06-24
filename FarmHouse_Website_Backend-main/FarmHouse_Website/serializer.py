@@ -18,7 +18,6 @@ class EncodeWhileWriteOnly(serializers.Field):
 
 class BookingsSerializer(serializers.ModelSerializer):
     IDimage = EncodeWhileWriteOnly()
-    bookingDate = serializers.DateField(required=False)
 
     class Meta:
         model = Bookings
@@ -42,6 +41,11 @@ class BookingsSerializer(serializers.ModelSerializer):
             'purposeOfStay',
         ]
         write_only_fields = ['IDimage']
+        
+    def __init__(self, *args, **kwargs):
+        super(BookingsSerializer, self).__init__(*args, **kwargs)
+        for field in self.fields.values():
+            field.required = False
 
 
 class MenuSerializer(serializers.ModelSerializer):
@@ -58,13 +62,22 @@ class MenuSerializer(serializers.ModelSerializer):
             'dishSource',
             'dishCategory',
         ]
+        
+    def __init__(self, *args, **kwargs):
+        super(MenuSerializer, self).__init__(*args, **kwargs)
+        for field in self.fields.values():
+            field.required = False
 
 class ReviewsSerializer(serializers.ModelSerializer):
     bookingId = serializers.IntegerField(required=False)
-    reviewDate = serializers.DateField(required=False)
 
     class Meta:
         model = Reviews
         fields = '__all__'
+        
+    def __init__(self, *args, **kwargs):
+        super(ReviewsSerializer, self).__init__(*args, **kwargs)
+        for field in self.fields.values():
+            field.required = False
 
 
