@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import menuData from "../API/GetApi";
+import {menuData} from "../API/GetApi";
 
 // ✅ Image imports with unique names
 import vegImage from "../assets/menu1.avif";

@@ -78,6 +78,23 @@ class ReviewsViewSet(BaseViewSet):
                     return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
             except Exception as e:
                 print(e)
+                
+    def list(self, request):
+        queryset = self.get_queryset()
+        serializer = ReviewsSerializer(queryset, many=True)
+        reviews = serializer.data
+
+        for review in reviews:
+            review['media_list'] = utils.getMedia(review['reviewId'])
+
+        return Response(data=reviews, status=status.HTTP_200_OK)
+
+    def retrieve(self, request, *args, **kwargs):
+        queryset = self.get_queryset().get(reviewId=kwargs.get('pk'))
+        serializer = ReviewsSerializer(queryset, many=False)
+        review = serializer.data
+        review['media_list'] = utils.getMedia(review['reviewId'])
+        return Response(data=review, status=status.HTTP_200_OK)
 
 # class Authorization(APIView):
     
