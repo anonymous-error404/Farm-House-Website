@@ -11,5 +11,5 @@ baseUrl = 'NirmalFarms/api'
 
 urlpatterns = [
     path(f'{baseUrl}/', include(router.urls)),
-    path(f'{baseUrl}/otpverification/', Authorization.as_view(), name="otp_verification")
+    # path(f'{baseUrl}/otpverification/', Authorization.as_view(), name="otp_verification")
 ]
