@@ -1,16 +1,16 @@
 import { useEffect, useState } from "react";
 import axiosInstance from "../API/Axios";
-import fetchData from "../API/GetApi";
+import menuData from "../API/GetApi";
 
 import React from 'react'
 const Test = () => {
 
     useEffect(() => {
-    const res = fetchData();
+    const res = menuData();
     }, []);
   return (
     <div>
-        <h1>Reviews</h1>
+        <h1>menu</h1>
     </div>
   )
 }
