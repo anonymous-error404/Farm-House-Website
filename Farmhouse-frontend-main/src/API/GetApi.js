@@ -1,5 +1,6 @@
 import axiosInstance from "./Axios";
 
+
 export const fetchReviews = async () => {
   try {
     const response = await axiosInstance.get('/reviews/');
@@ -9,6 +10,7 @@ export const fetchReviews = async () => {
     throw error;
 }
 };
+
 const menuData = async () => {
   try {
     const response = await axiosInstance.get('/menu/');
@@ -19,4 +21,15 @@ const menuData = async () => {
   }
 }
 
+const fetchBookings = async () => {
+  try {
+    const response = await axiosInstance.get('/bookings/');
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching data:", error);
+    throw error;
+  }
+}
+
 export default menuData;
+export default fetchBookings;

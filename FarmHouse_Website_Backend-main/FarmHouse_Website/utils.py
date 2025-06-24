@@ -209,7 +209,7 @@ def validate_booking_dates(check_in_date, check_out_date):
         return False, 'Check-in date cannot be in the past.'
 
     # Check if check-out date is after check-in date
-    if check_out_date <= check_in_date:
+    if check_out_date < check_in_date:
         return False, 'Check-out date must be after check-in date.'
 
     # Check if booking duration is reasonable (e.g., max 30 days)
@@ -303,22 +303,22 @@ def getMedia(review_id):
         return media_list
 
 
-def sendOtpVerificationMail(receiver):
-    otp = random.randint(100000, 999999)
+# def sendOtpVerificationMail(receiver):
+#     otp = random.randint(100000, 999999)
 
-    try:
-        print("Sending to:", receiver)
+#     try:
+#         print("Sending to:", receiver)
 
-        email = EmailMessage(
-            subject="OTP Verification",
-            body=f"Your OTP is {otp}",
-            from_email=settings.EMAIL_HOST_USER,
-            to=[receiver]
-        )
-        if email.send(fail_silently=False) :
-            cache.set(receiver,otp,timeout=300)
-            print("email sent with otp ", otp)
-            return True
-        return False
-    except Exception as e:
-        print(e)
+#         email = EmailMessage(
+#             subject="OTP Verification",
+#             body=f"Your OTP is {otp}",
+#             from_email=settings.EMAIL_HOST_USER,
+#             to=[receiver]
+#         )
+#         if email.send(fail_silently=False) :
+#             cache.set(receiver,otp,timeout=300)
+#             print("email sent with otp ", otp)
+#             return True
+#         return False
+#     except Exception as e:
+#         print(e)
