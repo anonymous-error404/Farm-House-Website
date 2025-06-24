@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, date
 from rest_framework import viewsets, status
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -42,8 +42,9 @@ class BookingViewSet(BaseViewSet):
             if 'IDimage' not in serializer.validated_data:
                 return Response({'message': 'IDimage is required'}, status=status.HTTP_206_PARTIAL_CONTENT)
 
-            serializer.validated_data['bookingDate'] = datetime.today()
-            serializer.validated_data['guestEmail'] = email
+            email = serializer.validated_data.get('guestEmail')
+            serializer.validated_data['bookingDate'] = date.today()
+            # serializer.validated_data['guestEmail'] = email
             serializer.save()
             return Response(serializer.data, status=status.HTTP_200_OK)
 

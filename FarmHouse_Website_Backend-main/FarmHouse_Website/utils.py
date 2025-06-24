@@ -209,7 +209,7 @@ def validate_booking_dates(check_in_date, check_out_date):
         return False, 'Check-in date cannot be in the past.'
 
     # Check if check-out date is after check-in date
-    if check_out_date <= check_in_date:
+    if check_out_date < check_in_date:
         return False, 'Check-out date must be after check-in date.'
 
     # Check if booking duration is reasonable (e.g., max 30 days)

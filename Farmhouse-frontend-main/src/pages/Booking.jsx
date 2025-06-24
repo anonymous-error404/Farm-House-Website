@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-import axios from 'axios';
+import { fetchBookings } from '../API/GetApi';
+import { submitBooking } from '../API/PostApi';
 
 const BookingForm = () => {
   const initialState = {
@@ -16,60 +17,48 @@ const BookingForm = () => {
     IDtype: '',
     IDnumber: '',
     purposeOfStay: '',
-    IDproofImage: null,
+    IDimage: null,
+    paymentType: '', 
   };
 
   const [formData, setFormData] = useState(initialState);
   const [bookedDates, setBookedDates] = useState([]);
   const [selectedRange, setSelectedRange] = useState([]);
+  const fileInputRef = React.useRef(null);
 
   // Fetch booked dates from backend 
 
-  // useEffect(() => {
-  //   const fetchBookedDates = async () => {
-  //     try {
-  //       const response = await axios.get('http://localhost:8000/api/bookings/');
-  //       const allDates = [];
-
-  //       response.data.forEach((booking) => {
-  //         const checkIn = new Date(booking.checkInDate);
-  //         const checkOut = new Date(booking.checkOutDate);
-  //         for (let d = new Date(checkIn); d <= new Date(checkOut); d.setDate(d.getDate() + 1)) {
-  //           allDates.push(new Date(d));
-  //         }
-  //       });
-
-  //       setBookedDates(allDates);
-  //     } catch (error) {
-  //       console.error("Error fetching bookings:", error);
-  //     }
-  //   };
-
-  //   fetchBookedDates();
-  // }, []);
-  
-
-  //when you want connect just comment below's code
   useEffect(() => {
-  const hardcodedBookings = [
-    { checkInDate: "2025-06-18", checkOutDate: "2025-06-20" },
-    { checkInDate: "2025-06-23", checkOutDate: "2025-06-24" },
-    { checkInDate: "2025-06-27", checkOutDate: "2025-06-29" }
-  ];
+    const fetchBookedDates = async () => {
+      try {
+        const data = await fetchBookings();
+  
+        const today = new Date();
+        today.setHours(0, 0, 0, 0); // Reset time to midnight
+  
+        const allDates = [];
+  
+        data.forEach((booking) => {
+          const checkIn = new Date(booking.checkInDate);
+          const checkOut = new Date(booking.checkOutDate);
+  
+          // Only consider bookings that are today or in the future
+          if (checkOut >= today) {
+            for (let d = new Date(checkIn); d <= checkOut; d.setDate(d.getDate() + 1)) {
+              allDates.push(new Date(d));
+            }
+          }
+        });
+  
+        setBookedDates(allDates);
+      } catch (error) {
+        console.error("Error fetching bookings:", error);
+      }
+    };
+  
+    fetchBookedDates();
+  }, []);
 
-  const allDates = [];
-  hardcodedBookings.forEach((booking) => {
-    const checkIn = new Date(booking.checkInDate);
-    const checkOut = new Date(booking.checkOutDate);
-    for (let d = new Date(checkIn); d <= new Date(checkOut); d.setDate(d.getDate() + 1)) {
-      allDates.push(new Date(d));
-    }
-  });
-
-  setBookedDates(allDates);
-}, []);
-
-//
 
   const getDateRange = (start, end) => {
     const range = [];
@@ -86,7 +75,7 @@ const BookingForm = () => {
 
   const handleChange = (e) => {
     const { name, value, files } = e.target;
-    if (name === 'IDproofImage') {
+    if (name === 'IDimage') {
       setFormData({ ...formData, [name]: files[0] });
     } else {
       setFormData({ ...formData, [name]: value });
@@ -97,31 +86,70 @@ const BookingForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const { checkInDate, checkOutDate, guestPhone, guestName, totalGuestsAdults, IDproofImage } = formData;
-    const checkIn = new Date(checkInDate);
-    const checkOut = new Date(checkOutDate);
+    const { checkInDate, checkOutDate, guestPhone, guestName, totalGuestsAdults, IDimage, paymentType } = formData;
 
-    if (checkOut <= checkIn) return alert("Check-out date must be after check-in date.");
+    // Check for empty check-in/check-out
+    if (!checkInDate) return alert("Check-in date is required.");
+    if (!checkOutDate) return alert("Check-out date is required.");
+
+    // Use local date objects for comparison
+    const checkIn = new Date(checkInDate + 'T00:00:00');
+    const checkOut = new Date(checkOutDate + 'T00:00:00');
+
+    if (checkOut < checkIn) return alert("Check-out date cannot be before check-in date.");
     if (!guestName) return alert("Full name is required.");
+    if (!/^[a-zA-Z\s]+$/.test(guestName)) return alert("Full name should only contain letters.");
     if (!isValidPhone(guestPhone)) return alert("Phone number must be 10 digits.");
-    if (!totalGuestsAdults) return alert("Total adults is required.");
-    if (!IDproofImage) return alert("Please upload ID proof image.");
+    if (!totalGuestsAdults || totalGuestsAdults <= 0) return alert("Total adults is required.");
+    // Only validate email if not empty
+    if (formData.guestEmail && !/^\S+@\S+\.\S+$/.test(formData.guestEmail)) return alert("Please enter a valid email address.");
+    if (!IDimage) return alert("Please upload ID proof image.");
+    // image size 
+    if (IDimage && !IDimage.type.startsWith("image/")) {
+      return alert("Please upload a valid image file (jpg, png, etc).");
+    }
+    if (IDimage && IDimage.size > 10 * 1024 * 1024) {
+      return alert("Image size should not exceed 10MB.");
+    }
+    if (!paymentType) return alert("Please select a payment type.");
+
+    // ID validations
+    if (formData.IDtype === 'Aadhar' && !/^\d{12}$/.test(formData.IDnumber)) {
+      return alert("Aadhar number must be exactly 12 digits.");
+    }
+    if (formData.IDtype === 'PAN' && !/^[A-Z]{5}[0-9]{4}[A-Z]{1}$/.test(formData.IDnumber.toUpperCase())) {
+      return alert("Invalid PAN card format.");
+    }
+    if (formData.IDtype === 'Passport' && !/^[A-PR-WY][0-9]{7}$/i.test(formData.IDnumber)) {
+      return alert("Invalid Passport number. Format: 1 letter followed by 7 digits.");
+    }
+    if (formData.IDtype === 'Driving License' && !/^[A-Z]{2}[0-9]{2}\s?[0-9]{11}$/i.test(formData.IDnumber)) {
+      return alert("Invalid Driving License format. Format: e.g., MH12 12345678901");
+    }
+
+    // Check for booking conflict in the entire range
+    const range = getDateRange(checkIn, checkOut);
+    if (range.some(date => isBooked(date))) {
+      return alert("One or more selected dates are already booked. Please choose different dates.");
+    }
 
     const formPayload = new FormData();
     Object.keys(formData).forEach(key => {
-      formPayload.append(key, formData[key]);
+      // Use local date string (YYYY-MM-DD) for checkInDate and checkOutDate
+      if (key === 'checkInDate' || key === 'checkOutDate') {
+        formPayload.append(key, formData[key]);
+      } else {
+        formPayload.append(key, formData[key]);
+      }
     });
 
     try {
-      const response = await axios.post('http://localhost:8000/api/bookings/', formPayload, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        }
-      });
-
+      await submitBooking(formPayload); // this will come from PostApi.js
       alert("✅ Booking submitted successfully!");
       setFormData(initialState);
       setSelectedRange([]);
+      // Reset file input manually
+      if (fileInputRef.current) fileInputRef.current.value = '';
     } catch (error) {
       console.error("Error submitting booking:", error.response?.data || error.message);
       alert("❌ Error submitting booking. Please try again.");
@@ -162,13 +190,18 @@ const BookingForm = () => {
                   } else {
                     const isoDate = date.toISOString().split('T')[0];
                     setFormData({ ...formData, checkInDate: isoDate });
-
+                
                     if (formData.checkOutDate) {
                       const range = getDateRange(new Date(isoDate), new Date(formData.checkOutDate));
+                      setSelectedRange(range);
+                    } else {
+                      setFormData({ ...formData, checkInDate: isoDate });
+                      const range = getDateRange(date, new Date(formData.checkOutDate));
                       setSelectedRange(range);
                     }
                   }
                 }}
+                
                 bookedDates={bookedDates}
                 selectedRange={selectedRange}
               />
@@ -214,11 +247,27 @@ const BookingForm = () => {
               <label className="block mb-2 text-sm font-semibold text-primary-dark">Upload ID Proof Image *</label>
               <input
                 type="file"
-                name="IDproofImage"
+                name="IDimage"
                 accept="image/*"
                 onChange={handleChange}
                 className="w-full p-3 text-sm border border-green-200 rounded-md focus:outline-none focus:ring-2 focus:ring-green-400"
                 required
+                ref={fileInputRef}
+              />
+            </div>
+          </div>
+
+          {/* Payment Type */}
+          <div>
+            <SectionTitle title="Payment Information" />
+            <div className="grid grid-cols-1 gap-4">
+              <FormSelect 
+                label="Payment Type *" 
+                name="paymentType" 
+                value={formData.paymentType} 
+                onChange={handleChange} 
+                options={['Cash', 'Online']} 
+                required 
               />
             </div>
           </div>
@@ -308,6 +357,7 @@ const FormDatePicker = ({ label, selectedDate, onDateChange, bookedDates, select
         if (selectedRange.some(d => d.toDateString() === date.toDateString())) return 'react-datepicker__day--selected-range';
         return undefined;
       }}
+      minDate={new Date()}
       className="w-full p-3 text-sm border border-green-200 rounded-md focus:outline-none focus:ring-2 focus:ring-green-400"
       placeholderText={`Select ${label.replace("*", "")}`}
     />
