@@ -9,15 +9,14 @@ from rest_framework.serializers import Serializer
 from FarmHouse_Website_Backend import settings
 from . import compressor, views
 from .models import Bookings, ReviewsMedia
-from django.core.cache import cache
 
-# Define payment status constants for clarity
-PAYMENT_STATUS_PENDING = 0
-PAYMENT_STATUS_PAID = 1
-PAYMENT_STATUS_APPROVED_UNPAID = 2
+# # Define payment status constants for clarity
+# PAYMENT_STATUS_PENDING = 0
+# PAYMENT_STATUS_PAID = 1
+# PAYMENT_STATUS_APPROVED_UNPAID = 2
 
-# List of payment statuses that should block dates (confirmed bookings)
-CONFIRMED_PAYMENT_STATUSES = [PAYMENT_STATUS_PAID, PAYMENT_STATUS_APPROVED_UNPAID]
+# # List of payment statuses that should block dates (confirmed bookings)
+# CONFIRMED_PAYMENT_STATUSES = [PAYMENT_STATUS_PAID, PAYMENT_STATUS_APPROVED_UNPAID]
 
 
 # def get_available_dates(start_date, end_date=None, days=30):
@@ -64,37 +63,37 @@ CONFIRMED_PAYMENT_STATUSES = [PAYMENT_STATUS_PAID, PAYMENT_STATUS_APPROVED_UNPAI
 #     return available_periods
 
 
-# def check_booking_availability(check_in_date, check_out_date, exclude_booking_id=None):
-#     """
-#     Check if dates are available for booking.
-#     Returns (is_available: bool, conflicting_bookings: QuerySet)
-#     """
-#     # Look for any confirmed bookings that overlap with the requested period
-#     conflicts_query = Bookings.objects.filter(
-#         Q(paymentStatus__in=CONFIRMED_PAYMENT_STATUSES) &
-#         (
-#             # Case 1: A booking that starts during the requested period
-#                 (Q(checkInDate__gte=check_in_date) & Q(checkInDate__lt=check_out_date)) |
-#                 # Case 2: A booking that ends during the requested period
-#                 (Q(checkOutDate__gt=check_in_date) & Q(checkOutDate__lte=check_out_date)) |
-#                 # Case 3: A booking that completely spans the requested period
-#                 (Q(checkInDate__lte=check_in_date) & Q(checkOutDate__gte=check_out_date))
-#         )
-#     )
+def check_booking_availability(check_in_date, check_out_date, exclude_booking_id=None):
+    """
+    Check if dates are available for booking.
+    Returns (is_available: bool, conflicting_bookings: QuerySet)
+    """
+    # Look for any confirmed bookings that overlap with the requested period
+    conflicts_query = Bookings.objects.filter(
+        Q(paymentStatus="PAID") &
+        (
+            # Case 1: A booking that starts during the requested period
+                (Q(checkInDate__gte=check_in_date) & Q(checkInDate__lt=check_out_date)) |
+                # Case 2: A booking that ends during the requested period
+                (Q(checkOutDate__gt=check_in_date) & Q(checkOutDate__lte=check_out_date)) |
+                # Case 3: A booking that completely spans the requested period
+                (Q(checkInDate__lte=check_in_date) & Q(checkOutDate__gte=check_out_date))
+        )
+    )
 
-#     # Exclude current booking if updating existing booking
-#     if exclude_booking_id:
-#         conflicts_query = conflicts_query.exclude(bookingId=exclude_booking_id)
+    # Exclude current booking if updating existing booking
+    if exclude_booking_id:
+        conflicts_query = conflicts_query.exclude(bookingId=exclude_booking_id)
 
-#     conflicts = []
+    conflicts = []
 
-#     for booking in conflicts_query.order_by('checkInDate'):
-#         conflicts.append({
-#             'start': booking.checkInDate,
-#             'end': booking.checkOutDate
-#         })
+    for booking in conflicts_query.order_by('checkInDate'):
+        conflicts.append({
+            'start': booking.checkInDate,
+            'end': booking.checkOutDate
+        })
 
-#     return len(conflicts) != 0, conflicts
+    return len(conflicts) != 0, conflicts
 
 
 # def generate_alternative_dates(check_in_date, check_out_date, duration):

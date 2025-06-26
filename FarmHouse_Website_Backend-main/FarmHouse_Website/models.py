@@ -5,7 +5,7 @@ class Bookings(models.Model):
     bookingDate = models.DateField()
     checkInDate = models.DateField()
     checkOutDate = models.DateField()
-    paymentStatus = models.IntegerField(default=0)
+    paymentStatus = models.CharField(default="", max_length=10)
     paymentType = models.CharField(max_length=100)
     paymentAmount = models.IntegerField(default=0)
     guestName = models.TextField()
