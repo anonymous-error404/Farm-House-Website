@@ -17,30 +17,10 @@ class EncodeWhileWriteOnly(serializers.Field):
 
 
 class BookingsSerializer(serializers.ModelSerializer):
-    # IDimage = EncodeWhileWriteOnly()
 
     class Meta:
         model = Bookings
-        fields = [
-            'bookingId',
-            'bookingDate',
-            'checkInDate',
-            'checkOutDate',
-            'paymentStatus',
-            'paymentType',
-            'paymentAmount',
-            'guestName',
-            'guestEmail',
-            'guestPhone',
-            'guestAddress',
-            'totalGuestsAdults',
-            'totalGuestsChildren',
-            # 'IDtype',
-            # 'IDnumber',
-            # 'IDimage',
-            'purposeOfStay',
-        ]
-        # write_only_fields = ['IDimage']
+        fields = '__all__'
         
     def __init__(self, *args, **kwargs):
         super(BookingsSerializer, self).__init__(*args, **kwargs)
