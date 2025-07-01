@@ -17,7 +17,7 @@ class EncodeWhileWriteOnly(serializers.Field):
 
 
 class BookingsSerializer(serializers.ModelSerializer):
-    IDimage = EncodeWhileWriteOnly()
+    # IDimage = EncodeWhileWriteOnly()
 
     class Meta:
         model = Bookings
@@ -35,9 +35,9 @@ class BookingsSerializer(serializers.ModelSerializer):
             'guestAddress',
             'totalGuestsAdults',
             'totalGuestsChildren',
-            'IDtype',
-            'IDnumber',
-            'IDimage',
+            # 'IDtype',
+            # 'IDnumber',
+            # 'IDimage',
             'purposeOfStay',
         ]
         write_only_fields = ['IDimage']
