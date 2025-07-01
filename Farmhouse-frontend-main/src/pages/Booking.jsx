@@ -6,19 +6,14 @@ import { submitBooking } from '../API/PostApi';
 
 const BookingForm = () => {
   const initialState = {
-    checkInDate: '',
-    checkOutDate: '',
+    checkInDate: null,
+    checkOutDate: null,
     guestName: '',
     guestEmail: '',
     guestPhone: '',
-    guestAddress: '',
     totalGuestsAdults: '',
     totalGuestsChildren: '',
-    IDtype: '',
-    IDnumber: '',
     purposeOfStay: '',
-    IDimage: null,
-    paymentType: '', 
   };
 
   const [formData, setFormData] = useState(initialState);
@@ -86,58 +81,32 @@ const BookingForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const { checkInDate, checkOutDate, guestPhone, guestName, totalGuestsAdults, IDimage, paymentType } = formData;
+    const { checkInDate, checkOutDate, guestPhone, guestName, totalGuestsAdults } = formData;
 
-    // Check for empty check-in/check-out
     if (!checkInDate) return alert("Check-in date is required.");
     if (!checkOutDate) return alert("Check-out date is required.");
 
     // Use local date objects for comparison
-    const checkIn = new Date(checkInDate + 'T00:00:00');
-    const checkOut = new Date(checkOutDate + 'T00:00:00');
+    const checkIn = checkInDate;
+    const checkOut = checkOutDate;
 
     if (checkOut < checkIn) return alert("Check-out date cannot be before check-in date.");
     if (!guestName) return alert("Full name is required.");
     if (!/^[a-zA-Z\s]+$/.test(guestName)) return alert("Full name should only contain letters.");
     if (!isValidPhone(guestPhone)) return alert("Phone number must be 10 digits.");
     if (!totalGuestsAdults || totalGuestsAdults <= 0) return alert("Total adults is required.");
-    // Only validate email if not empty
     if (formData.guestEmail && !/^\S+@\S+\.\S+$/.test(formData.guestEmail)) return alert("Please enter a valid email address.");
-    if (!IDimage) return alert("Please upload ID proof image.");
-    // image size 
-    if (IDimage && !IDimage.type.startsWith("image/")) {
-      return alert("Please upload a valid image file (jpg, png, etc).");
-    }
-    if (IDimage && IDimage.size > 10 * 1024 * 1024) {
-      return alert("Image size should not exceed 10MB.");
-    }
-    if (!paymentType) return alert("Please select a payment type.");
 
-    // ID validations
-    if (formData.IDtype === 'Aadhar' && !/^\d{12}$/.test(formData.IDnumber)) {
-      return alert("Aadhar number must be exactly 12 digits.");
-    }
-    if (formData.IDtype === 'PAN' && !/^[A-Z]{5}[0-9]{4}[A-Z]{1}$/.test(formData.IDnumber.toUpperCase())) {
-      return alert("Invalid PAN card format.");
-    }
-    if (formData.IDtype === 'Passport' && !/^[A-PR-WY][0-9]{7}$/i.test(formData.IDnumber)) {
-      return alert("Invalid Passport number. Format: 1 letter followed by 7 digits.");
-    }
-    if (formData.IDtype === 'Driving License' && !/^[A-Z]{2}[0-9]{2}\s?[0-9]{11}$/i.test(formData.IDnumber)) {
-      return alert("Invalid Driving License format. Format: e.g., MH12 12345678901");
-    }
-
-    // Check for booking conflict in the entire range
     const range = getDateRange(checkIn, checkOut);
     if (range.some(date => isBooked(date))) {
       return alert("One or more selected dates are already booked. Please choose different dates.");
     }
 
+    // Prepare payload, convert dates to YYYY-MM-DD
     const formPayload = new FormData();
     Object.keys(formData).forEach(key => {
-      // Use local date string (YYYY-MM-DD) for checkInDate and checkOutDate
       if (key === 'checkInDate' || key === 'checkOutDate') {
-        formPayload.append(key, formData[key]);
+        formPayload.append(key, formData[key] ? formData[key].toISOString().split('T')[0] : '');
       } else {
         formPayload.append(key, formData[key]);
       }
@@ -188,20 +157,17 @@ const BookingForm = () => {
                   if (isBooked(date)) {
                     alert("❌ This date is already booked for check-in.");
                   } else {
-                    const isoDate = date.toISOString().split('T')[0];
-                    setFormData({ ...formData, checkInDate: isoDate });
-                
+                    setFormData({ ...formData, checkInDate: date });
                     if (formData.checkOutDate) {
-                      const range = getDateRange(new Date(isoDate), new Date(formData.checkOutDate));
+                      const range = getDateRange(date, formData.checkOutDate);
                       setSelectedRange(range);
                     } else {
-                      setFormData({ ...formData, checkInDate: isoDate });
-                      const range = getDateRange(date, new Date(formData.checkOutDate));
+                      setFormData({ ...formData, checkInDate: date });
+                      const range = getDateRange(date, formData.checkOutDate);
                       setSelectedRange(range);
                     }
                   }
                 }}
-                
                 bookedDates={bookedDates}
                 selectedRange={selectedRange}
               />
@@ -209,11 +175,9 @@ const BookingForm = () => {
                 label="Check-Out Date"
                 selectedDate={formData.checkOutDate}
                 onDateChange={(date) => {
-                  const isoDate = date.toISOString().split('T')[0];
-                  setFormData({ ...formData, checkOutDate: isoDate });
-
+                  setFormData({ ...formData, checkOutDate: date });
                   if (formData.checkInDate) {
-                    const range = getDateRange(new Date(formData.checkInDate), new Date(isoDate));
+                    const range = getDateRange(formData.checkInDate, date);
                     setSelectedRange(range);
                   }
                 }}
@@ -230,45 +194,8 @@ const BookingForm = () => {
               <FormInput label="Full Name *" name="guestName" value={formData.guestName} onChange={handleChange} required />
               <FormInput label="Email Address" name="guestEmail" type="email" value={formData.guestEmail} onChange={handleChange} />
               <FormInput label="Phone Number *" name="guestPhone" type="tel" value={formData.guestPhone} onChange={handleChange} required />
-              <FormInput label="Address" name="guestAddress" value={formData.guestAddress} onChange={handleChange} />
               <FormInput label="Total Adults *" name="totalGuestsAdults" type="number" min="1" value={formData.totalGuestsAdults} onChange={handleChange} required />
               <FormInput label="Total Children" name="totalGuestsChildren" type="number" min="0" value={formData.totalGuestsChildren} onChange={handleChange} />
-            </div>
-          </div>
-
-          {/* ID Section */}
-          <div>
-            <SectionTitle title="Identification" />
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <FormSelect label="ID Type *" name="IDtype" value={formData.IDtype} onChange={handleChange} options={['Aadhar', 'PAN', 'Passport', 'Driving License']} required />
-              <FormInput label="ID Number *" name="IDnumber" value={formData.IDnumber} onChange={handleChange} required />
-            </div>
-            <div>
-              <label className="block mb-2 text-sm font-semibold text-primary-dark">Upload ID Proof Image *</label>
-              <input
-                type="file"
-                name="IDimage"
-                accept="image/*"
-                onChange={handleChange}
-                className="w-full p-3 text-sm border border-green-200 rounded-md focus:outline-none focus:ring-2 focus:ring-green-400"
-                required
-                ref={fileInputRef}
-              />
-            </div>
-          </div>
-
-          {/* Payment Type */}
-          <div>
-            <SectionTitle title="Payment Information" />
-            <div className="grid grid-cols-1 gap-4">
-              <FormSelect 
-                label="Payment Type *" 
-                name="paymentType" 
-                value={formData.paymentType} 
-                onChange={handleChange} 
-                options={['Cash', 'Online']} 
-                required 
-              />
             </div>
           </div>
 
@@ -346,7 +273,7 @@ const FormDatePicker = ({ label, selectedDate, onDateChange, bookedDates, select
   <div className="w-full">
     <label className="block mb-2 text-sm text-primary-dark font-semibold">{label}</label>
     <DatePicker
-      selected={selectedDate ? new Date(selectedDate) : null}
+      selected={selectedDate}
       onChange={onDateChange}
       highlightDates={[
         { 'react-datepicker__day--booked': bookedDates },
