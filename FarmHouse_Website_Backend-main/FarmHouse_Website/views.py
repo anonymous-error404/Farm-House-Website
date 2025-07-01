@@ -3,25 +3,12 @@ from rest_framework import viewsets, status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from FarmHouse_Website.serializer import *
-from django.core.cache import cache
 
-class BaseViewSet(viewsets.ModelViewSet):
-    def initialize_request(self, request, *args, **kwargs):
-        request = super().initialize_request(request, *args, **kwargs)
-
-        # Set default role if not present in session
-        if not request.session.get('role'):
-            request.session['role'] = 'Customer'
-            request.session['status'] = 'unverified'
-            #request.session['customerEmail'] = request.data['customerEmail']
-        
-        return request
-
-class BookingViewSet(BaseViewSet):
+class BookingViewSet(viewsets.ModelViewSet):
     queryset = Bookings.objects.all()
     serializer_class = BookingsSerializer
 
-    def create(self, request):
+    def create(self, request, *args, **kwargs):
 
         serializer = self.get_serializer(data=request.data)
 
@@ -39,26 +26,21 @@ class BookingViewSet(BaseViewSet):
             if conflict_status:
                 return Response(data=conflicts, status=status.HTTP_409_CONFLICT)
 
-            if 'IDimage' not in serializer.validated_data:
-                return Response({'message': 'IDimage is required'}, status=status.HTTP_206_PARTIAL_CONTENT)
-
-            email = serializer.validated_data.get('guestEmail')
             serializer.validated_data['bookingDate'] = date.today()
-            # serializer.validated_data['guestEmail'] = email
             serializer.save()
             return Response(serializer.data, status=status.HTTP_200_OK)
 
         return Response(serializer.errors, status=status.HTTP_422_UNPROCESSABLE_ENTITY)
 
-class MenuViewSet(BaseViewSet):
+class MenuViewSet(viewsets.ModelViewSet):
     queryset = Menu.objects.all()
     serializer_class = MenuSerializer
 
-class ReviewsViewSet(BaseViewSet):
+class ReviewsViewSet(viewsets.ModelViewSet):
     queryset = Reviews.objects.all()
     serializer_class = ReviewsSerializer
 
-    def create(self, request):
+    def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
 
         if serializer.is_valid(raise_exception=True):
@@ -79,7 +61,7 @@ class ReviewsViewSet(BaseViewSet):
             except Exception as e:
                 print(e)
                 
-    def list(self, request):
+    def list(self, request, *args, **kwargs):
         queryset = self.get_queryset()
         serializer = ReviewsSerializer(queryset, many=True)
         reviews = serializer.data
