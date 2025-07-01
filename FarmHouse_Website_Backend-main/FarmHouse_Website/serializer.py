@@ -40,7 +40,7 @@ class BookingsSerializer(serializers.ModelSerializer):
             # 'IDimage',
             'purposeOfStay',
         ]
-        write_only_fields = ['IDimage']
+        # write_only_fields = ['IDimage']
         
     def __init__(self, *args, **kwargs):
         super(BookingsSerializer, self).__init__(*args, **kwargs)
