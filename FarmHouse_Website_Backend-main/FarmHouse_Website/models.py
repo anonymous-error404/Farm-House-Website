@@ -5,7 +5,7 @@ class Bookings(models.Model):
     bookingDate = models.DateField()
     checkInDate = models.DateField()
     checkOutDate = models.DateField()
-    paymentStatus = models.IntegerField(default=0)
+    paymentStatus = models.CharField(default="", max_length=10)
     paymentType = models.CharField(max_length=100)
     paymentAmount = models.IntegerField(default=0)
     guestName = models.TextField()
@@ -14,9 +14,9 @@ class Bookings(models.Model):
     guestAddress = models.TextField()
     totalGuestsAdults = models.IntegerField(default=0)
     totalGuestsChildren = models.IntegerField(default=0)
-    IDtype = models.CharField(max_length=30)
-    IDnumber = models.CharField(max_length=30, verbose_name="number on ID")
-    IDimage = models.BinaryField(default=b'')
+    # IDtype = models.CharField(max_length=30)
+    # IDnumber = models.CharField(max_length=30, verbose_name="number on ID")
+    # IDimage = models.BinaryField(default=b'')
     purposeOfStay = models.CharField(max_length=50)
 
 class Reviews(models.Model):
