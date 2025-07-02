@@ -22,38 +22,31 @@ const BookingForm = () => {
   const fileInputRef = React.useRef(null);
 
   // Fetch booked dates from backend 
+  const fetchBookedDates = async () => {
+    try {
+      const data = await fetchBookings();
+      const today = new Date();
+      today.setHours(0, 0, 0, 0); // Reset time to midnight
+      const allDates = [];
+      data.forEach((booking) => {
+        const checkIn = new Date(booking.checkInDate);
+        const checkOut = new Date(booking.checkOutDate);
+        // Only consider bookings that are today or in the future
+        if (checkOut >= today) {
+          for (let d = new Date(checkIn); d <= checkOut; d.setDate(d.getDate() + 1)) {
+            allDates.push(new Date(d));
+          }
+        }
+      });
+      setBookedDates(allDates);
+    } catch (error) {
+      console.error("Error fetching bookings:", error);
+    }
+  };
 
   useEffect(() => {
-    const fetchBookedDates = async () => {
-      try {
-        const data = await fetchBookings();
-  
-        const today = new Date();
-        today.setHours(0, 0, 0, 0); // Reset time to midnight
-  
-        const allDates = [];
-  
-        data.forEach((booking) => {
-          const checkIn = new Date(booking.checkInDate);
-          const checkOut = new Date(booking.checkOutDate);
-  
-          // Only consider bookings that are today or in the future
-          if (checkOut >= today) {
-            for (let d = new Date(checkIn); d <= checkOut; d.setDate(d.getDate() + 1)) {
-              allDates.push(new Date(d));
-            }
-          }
-        });
-  
-        setBookedDates(allDates);
-      } catch (error) {
-        console.error("Error fetching bookings:", error);
-      }
-    };
-  
     fetchBookedDates();
   }, []);
-
 
   const getDateRange = (start, end) => {
     const range = [];
@@ -119,6 +112,8 @@ const BookingForm = () => {
       setSelectedRange([]);
       // Reset file input manually
       if (fileInputRef.current) fileInputRef.current.value = '';
+      // Refresh booked dates after successful booking
+      await fetchBookedDates();
     } catch (error) {
       console.error("Error submitting booking:", error.response?.data || error.message);
       alert("❌ Error submitting booking. Please try again.");
