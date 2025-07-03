@@ -98,7 +98,7 @@ const FoodMenu = () => {
                 <img
                   src={getImageForCategory(key)}
                   alt={key}
-                  className="w-50 h-130 object-cover rounded-xl shadow-md border border-yellow-100 transition duration-300"
+                  className="w-full h-130 object-cover rounded-xl shadow-md border border-yellow-100 transition duration-300"
                 />
               </motion.div>
 
