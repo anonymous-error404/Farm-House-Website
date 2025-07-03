@@ -8,10 +8,10 @@ const AboutPromoSection = () => {
       style={{ backgroundImage: `url(${image})` }}
     >
       <div className="absolute inset-0 bg-opacity-50 flex flex-col justify-center items-center text-white text-center px-4">
-        <h2 className="text-4xl md:text-5xl font-bold mb-4">Discover Nirmal Farm</h2>
+        <h2 className="text-4xl md:text-5xl font-bold mb-4">Explore the Nirmal Experience</h2>
         <p className="text-lg md:text-xl text-gray-600 mb-6">Know the story behind our green paradise</p>
-        <Link to="/about" className="bg-green-900 px-6 py-3 rounded text-white font-semibold hover:bg-green-800 transition">
-          ABOUT US
+        <Link to="/blog" className="bg-orange-500 px-6 py-3 rounded text-white font-semibold hover:bg-orange-600 transition">
+          Read Our Stories
         </Link>
       </div>
     </div>
