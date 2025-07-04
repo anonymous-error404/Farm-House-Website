@@ -1,6 +1,5 @@
 import {BrowserRouter as Router, Routes, Route} from 'react-router-dom'
 import Header from './components/Header'
-import Footer from './components/Footer'
 import Gallery from './pages/Gallery'
 import Booking from './pages/Booking'
 import Menu from './pages/Menu';
@@ -24,7 +23,6 @@ function App() {
         <Route path='/bookings' element={<Booking />} />
         <Route path='/menu' element={<Menu />} />
       </Routes>
-      <Footer />
     </Router>
   )
 }

@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import { Carousel } from "react-responsive-carousel";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { NavLink } from "react-router-dom";
+import Footer from '../components/Footer'
 
 // ✅ Assets
 import home1 from "../assets/home1.jfif";
@@ -244,6 +245,7 @@ export default function Home() {
 
       <AboutPromoSection />
       <FarmInfoSection />
+      <Footer />
     </>
   );
 }

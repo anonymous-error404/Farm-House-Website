@@ -9,7 +9,7 @@ const ReviewCard = ({ review }) => {
   return (
     <>
       {/* Card */}
-      <div className="day-card">
+      <div className=" bg-white rounded-xl max-w-3xl w-full p-6 relative overflow-y-auto ">
         {hasMedia && (
           <div className="relative w-full">
             <Carousel
