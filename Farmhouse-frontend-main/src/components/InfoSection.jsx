@@ -23,7 +23,7 @@ export default function FarmInfoSection() {
           className="farm-info-card farm-info-card-green"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
+          transition={{delay:0.2, duration: 0.7 }}
           viewport={{ once: true }}
         >
           <div className="farm-info-card-header">
@@ -41,7 +41,7 @@ export default function FarmInfoSection() {
           className="farm-info-card farm-info-card-yellow"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.1 }}
+          transition={{ duration: 0.5, delay: 1 }}
           viewport={{ once: true }}
         >
           <div className="farm-info-card-header">
@@ -60,7 +60,7 @@ export default function FarmInfoSection() {
           className="farm-info-card farm-info-card-green-dark"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.2 }}
+          transition={{ duration: 0.5, delay: 1.3 }}
           viewport={{ once: true }}
         >
           <div className="farm-info-card-header">
@@ -81,7 +81,7 @@ export default function FarmInfoSection() {
           className="farm-info-card farm-info-card-yellow-dark"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.3 }}
+          transition={{ duration: 0.5, delay: 1.6 }}
           viewport={{ once: true }}
         >
           <div className="farm-info-card-header">

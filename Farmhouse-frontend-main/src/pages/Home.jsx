@@ -20,9 +20,9 @@ export default function Home() {
   return (
     <>
       {/* ✅ Hero Section with Video + Carousel */}
-      <section className="relative h-screen w-full">
+      <section className="relative h-screen w-full"> 
         <video
-          className="absolute top-0 left-0 w-full h-full object-cover z-0"
+          className="absolute top-0 left-0 h-full w-full object-cover z-0"
           autoPlay
           muted
           loop
@@ -32,7 +32,7 @@ export default function Home() {
           Your browser does not support the video tag.
         </video>
 
-        <div className="absolute top-0 left-0 w-full h-full bg-black bg-opacity-60 z-10" />
+        <div className="absolute top-0 left-0 h-full w-full bg-black/50 z-10" />
 
         <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-20 text-white text-center px-4 max-w-xl w-full">
           <Carousel
@@ -63,7 +63,7 @@ export default function Home() {
       </section>
 
 {/* Booking Form OVERLAPPING the carousel bottom */}
-<section className="relative bg-amber-50 pb-16">
+{/* <section className="relative bg-amber-50 pb-16">
   <div className="absolute -top-20 left-1/2 transform -translate-x-1/2 z-30 w-[95%] max-w-6xl">
     <div className="bg-white shadow-xl rounded-xl p-6 md:p-8">
       <form className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-4 items-end">
@@ -102,14 +102,20 @@ export default function Home() {
       </form>
     </div>
   </div>
-</section>
+</section> */}
 
 
 
       {/* Welcome Section */}
-  <section className="bg-amber-50 py-24 px-12 ">
+  <section className="day-section">
       <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-16 items-center mt-16">
         {/* Left Image Section */}
+         <motion.div
+            initial={{ opacity: 0, scale: 0.8 }}
+            transition={{delay:0.3, duration: 1 }}
+            whileInView={{ scale: 1, opacity: 1 }}
+            viewport={{ once: true}}
+          >
         <div className="relative flex justify-center items-center">
           <div className="relative w-full max-w-lg">
             <img
@@ -126,16 +132,24 @@ export default function Home() {
             className="absolute bottom-[-30px] right-[-20px] h-70 rounded-xl shadow-xl border-4 border-white object-cover"
           />
         </div>
+        </motion.div>
 
         {/* Right Text Section */}
-        <div>
-        <h1 className="text-5xl md:text-6xl font-extrabold text-amber-900 mb-6">
-        Welcome to <span className="text-green-600">Nirmal Farm</span>
-         </h1>
-
-          <p className="text-xl md:text-2xl text-green-700 leading-relaxed mb-6 max-w-xl">
+        <div >
+        <motion.div
+            initial={{opacity: 0, x: 20 }}
+            transition={{ delay: 0.5,duration: 1, ease: "easeOut"}}
+            whileInView={{ opacity: 1,x:0 }}
+            viewport={{ once: true }}
+         >
+        <h2 className="hero-title">
+        Welcome to <span className="hero-title-accent">Nirmal Farm</span>
+         </h2>
+        
+          <p className="hero-description m-4">
             Nestled amidst lush greenery and open skies, Nirmal Farm is your escape into nature's peace and simplicity. Located away from the hustle of city life, our farm offers the perfect setting for family outings, weekend getaways, and soulful relaxation.
           </p>
+          
               <NavLink to="/about">
                 <button className="inline-flex items-center gap-2 px-6 py-3 border-2 border-orange-500 text-orange-500 font-medium rounded-lg hover:bg-orange-500 hover:text-white">
                   know more
@@ -144,21 +158,22 @@ export default function Home() {
                   </svg>
                 </button>
               </NavLink>
+            </motion.div>
         </div>
       </div>
     </section>
 
       {/* A Day at Nirmal Farm */}
-<section className="bg-amber-50 px-5 py-16">
-  <div className="max-w-7xl mx-auto">
+<section className="day-section">
+  <div className="day-section-container ">
     <motion.h2
       initial={{ scale: 0.8, opacity: 0 }}
       whileInView={{ scale: 1, opacity: 1 }}
-      transition={{ duration: 0.6, ease: "easeOut" }}
+      transition={{ duration: 1, ease: "easeOut" }}
       viewport={{ once: true }}
-      className="text-4xl md:text-6xl font-extrabold text-center text-amber-900 mb-15"
+      className="day-section-title"
     >
-      A Day At <span className="text-green-600">Nirmal Farm</span>
+      A Day At <span className="day-section-title-accent">Nirmal Farm</span>
     </motion.h2>
 
     <div className="grid gap-10 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 ">
@@ -179,7 +194,7 @@ export default function Home() {
             initial={{ opacity: 0, y: 40 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: index * 0.2 }}
+            transition={{ duration: 0.6, delay: index * 0.8 }}
             className="bg-white shadow-md rounded-xl overflow-hidden text-center"
           >
             <div className="overflow-hidden">
@@ -232,3 +247,4 @@ export default function Home() {
     </>
   );
 }
+

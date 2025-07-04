@@ -261,6 +261,7 @@
   text-align: center;
   margin-bottom: 50px;
   font-weight: bold;
+  color: var(--color-secondary );
 }
 
 .day-section-title-accent {
