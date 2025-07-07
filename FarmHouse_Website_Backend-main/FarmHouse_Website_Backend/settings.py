@@ -22,9 +22,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-subwk9vjked#iwm78m7q@t$w%4jfo@ox+b3u0(_o#pv+ug5r!3'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['manasdev.pythonanywhere.com']
 
 # Application definition
 
@@ -152,5 +152,6 @@ def MAX_UPLOAD_SIZE():
 
 def PATH_TO_FFMPEG():
     return "C:/ffmpeg/ffmpeg-2025-06-11-git-f019dd69f0-essentials_build/bin/ffmpeg.exe"
+
 
 
